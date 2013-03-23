@@ -77,8 +77,9 @@ class TwitterController extends ContentController {
 				}
 			}
 		} else {
-			$form("You must be logged in to connect your Twitter account.", "bad");
+			$form->sessionMessage("You must be logged in to connect your Twitter account.", "bad");
 		}
+		$this->redirectBack();
 		return $this->renderWith(array("TwitterController", "Page", "Controller"));
 	}
 
@@ -107,8 +108,8 @@ class TwitterController extends ContentController {
 	**/
 	public function login() {
 		$form = $this->Form();
-
-		$siteConfig == SiteConfig::current_site_config();
+		
+		$siteConfig = SiteConfig::current_site_config();
 		if(!$siteConfig || !$siteConfig->EnableTwitterLogin) {
 			$form->sessionMessage("Twitter Login is disabled.", "bad");
 		} else {
@@ -138,9 +139,7 @@ class TwitterController extends ContentController {
 						// The twitter user is logged in. Find their account.
 						$member = Member::get()->filter("TwitterUserID", $user['id_str'])->first();
 						if($member) {
-							$this->extend("onBeforeTwitterLogin", $user, $member);
 							$member->logIn();
-							$this->extend("onAfterTwitterLogin", $user, $member);
 							$form->sessionMessage("You have logged in using Twitter.", "good");
 						} else {
 							$form->sessionMessage("Unable to find your account.", "bad");

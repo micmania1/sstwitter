@@ -1,6 +1,7 @@
 {
     "name": "micmania1/sstwitter",
     "description": "A silverstripe module to integrate Silverstripe with Twitter",
+    "type": "silverstripe-module",
     "require": {
         "micmania1/phptwitter": "1.0.*"
     },

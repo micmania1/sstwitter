@@ -74,23 +74,33 @@ class TwitterUser extends DataExtension {
 		            }
 		        }
 			}
-		}
 	
-		$fields->addFieldsToTab("Root.Twitter", array(
-			HeaderField::create("Access", 3),
-			TextField::create("TwitterAccessToken", "Access Token"),
-			TextField::create("TwitterAccessSecret", "Access Secret"),
-			HeaderField::create("User Details", 3),
-			TextField::create("TwitterUserID", "User ID"),
-			$test = TextField::create("TwitterScreenName", "Screen Name")
-		));
+			if(TwitterApp::curr()) {
+				$fields->addFieldsToTab("Root.Twitter", array(
+					HeaderField::create("Access", 3),
+					TextField::create("TwitterAccessToken", "Access Token"),
+					TextField::create("TwitterAccessSecret", "Access Secret"),
+					HeaderField::create("User Details", 3),
+					TextField::create("TwitterUserID", "User ID"),
+					$test = TextField::create("TwitterScreenName", "Screen Name")
+				));
 	
-		if(self::$twitter && !$this->owner->TwitterUserID) {
-			if($loginURL = self::$twitter->getLoginURL()) {
-			    $fields->insertBefore(LiteralField::create(
-			    	"LoginURL", '<p><a href="'.$loginURL.'" title="Update your access token">Update Access Tokens</a></p>'),
-			    	"TwitterAccessToken"
-				);
+				if(self::$twitter && !$this->owner->TwitterUserID) {
+					if($loginURL = self::$twitter->getLoginURL()) {
+						$fields->insertBefore(LiteralField::create(
+							"LoginURL", '<p><a href="'.$loginURL.'" title="Auto-fill">Auto-fill</a></p>'),
+							"TwitterAccessToken"
+						);
+					}
+				}
+			} else {
+				$fields->addFieldsToTab("Root.Twitter", array(
+					HeaderField::create("Access", 3),
+					LiteralField::create(
+						"Notice", 
+						"<p>You need to add your Twitter Consumer Key & Secret to your SiteConfig before the Integration can be complete.</p>"
+					)
+				));
 			}
 		}
 	}
