@@ -14,7 +14,7 @@ class TwitterApp extends DataExtension {
 	 * @var Twitter
 	**/
 	static $twitter;
-	
+
 	static $db = array(
 		"EnableTwitterLogin" => "Boolean",
 		"TwitterConsumerKey" => "Varchar(255)",
@@ -32,25 +32,25 @@ class TwitterApp extends DataExtension {
 	**/    
 	static public function curr() {
 		if(self::$twitter) {
-		    return self::$twitter;
+			return self::$twitter;
 		}
-		
+	
 		$config = SiteConfig::current_site_config();
 		if($config->TwitterConsumerKey && $config->TwitterConsumerSecret) {
-		    return self::$twitter = new Twitter($config->TwitterConsumerKey, $config->TwitterConsumerSecret);
+			return self::$twitter = new Twitter($config->TwitterConsumerKey, $config->TwitterConsumerSecret);
 		}
 		return false;
 	}
 
 	public function updateCMSFields(FieldList $fields) {
 		$fields->addFieldsToTab("Root.Twitter", array(
-		    HeaderField::create("Application Settings", 3),
-		    TextField::create("TwitterConsumerKey", "Consumer Key"),
-		    TextField::create("TwitterConsumerSecret", "Consumer Secret"),
-		    OptionsetField::create("Enable Twitter Login", "Twitter Login", array(
-		        0 => "Disabled",
-		        1 => "Enabled"
-		    ))
+			HeaderField::create("Application Settings", 3),
+			TextField::create("TwitterConsumerKey", "Consumer Key"),
+			TextField::create("TwitterConsumerSecret", "Consumer Secret"),
+			OptionsetField::create("Enable Twitter Login", "Twitter Login", array(
+    			0 => "Disabled",
+				1 => "Enabled"
+			))
 		));
 	}
 }
