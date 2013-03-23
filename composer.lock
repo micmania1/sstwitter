@@ -1,0 +1,43 @@
+{
+    "hash": "055538d45a68b0724710eb3d56fae65d",
+    "packages": [
+        {
+            "name": "micmania1/phptwitter",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/micmania1/phptwitter.git",
+                "reference": "1.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/micmania1/phptwitter/zipball/1.0.0",
+                "reference": "1.0.0",
+                "shasum": ""
+            },
+            "type": "library",
+            "description": "A PHP Twitter Library.",
+            "support": {
+                "source": "https://github.com/micmania1/phptwitter/tree/1.0.0",
+                "issues": "https://github.com/micmania1/phptwitter/issues"
+            },
+            "time": "2013-03-22 20:21:22"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
