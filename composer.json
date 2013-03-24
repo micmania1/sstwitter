@@ -3,13 +3,7 @@
     "description": "A silverstripe module to integrate Silverstripe with Twitter",
     "type": "silverstripe-module",
     "require": {
-        "micmania1/phptwitter": "1.0.*"
-    },
-    "repositories": [
-        {
-            "name": "micmania1/phptwitter",
-            "type": "vcs",
-            "url":  "git@github.com:micmania1/phptwitter.git"
-        }
-    ]
+        "micmania1/phptwitter": "1.0.*@stable",
+        "silverstripe/framework": "3.0.*@stable"
+    }
 }
