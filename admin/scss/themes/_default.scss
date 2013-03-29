@@ -1,0 +1,12 @@
+/**
+ * Default Theme colours
+**/
+
+
+$color-text-light: #ffffff !default;
+
+/*
+ * Twitter button */
+$color-button-twitter: #3B8EED !default;
+$color-button-twitter-dark: darken($color-button-twitter, 5%) !default;
+$color-button-twitter-light: lighten($color-button-twitter, 5%) !default;

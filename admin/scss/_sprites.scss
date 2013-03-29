@@ -1,0 +1,10 @@
+/*
+ * Sprite maps & Icons */
+@import "compass/utilities/sprites/base";
+@import "btn-icon/*.png";
+
+.ui-state-default, .ui-widget-content {
+	@include all-btn-icon-sprites;
+}
+
+$btn-icon: sprite-map("btn-icon/*.png", $spacing: 10px);
