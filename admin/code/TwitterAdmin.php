@@ -16,9 +16,13 @@ class TwitterAdmin extends LeftAndMain {
 		"EditForm"
 	);
 	
+	protected $twitter;
+	
 	public function init() {
 		parent::init();
-		Requirements::css("sstwitter/admin/css/screen.css");
+		
+		// Load Twitter App
+		$this->getTwitterApp();
 	}
 	
 	
@@ -26,34 +30,34 @@ class TwitterAdmin extends LeftAndMain {
 		$form = parent::getEditForm($id, $field);
 		$form->addExtraClass("center");
 		
-		$twitter = $this->getTwitterApp();
 		// Setup Fields
-		$form->setFields($twitter->getCMSFields());
+		$form->setFields($this->twitter->getCMSFields());
+		// Setup Actions
+		$form->setActions($this->getCMSActions());
+		// Populate Form
+		$form->loadDataFrom($this->twitter);
 		
+		return $form;
+	}
+	
+	public function getCMSActions() {
 		//Setup Actions
-		$actions = $form->Actions();
+		$actions = new FieldList();
 		$actions->push(
 			FormAction::create("save", "Save")->setUseButtonTag(true)
 				->addExtraClass('ss-ui-action-constructive')->setAttribute('data-icon', 'accept')
 		);
-		
-		// Add the authorize action if consumer keys are set.
-		if($twitter->hasExtension("TwitterUser") && $twitter->TwitterConsumerKey && $twitter->TwitterConsumerSecret) {
-			$buttonText = ($twitter->TwitterAccessToken && $twitter->TwitterAccessSecret) ? "Update or Re-Authorize a Twitter Account" : "Authorize a Twitter Account";
-			$actions->push(
-				FormAction::create("authorize", $buttonText)->setUseButtonTag(true)
-					->addExtraClass("sstwitter-ui-action-twitter")->setAttribute("data-icon", "twitter")
-			);
-		}
-		
-		$form->loadDataFrom($twitter);
-		return $form;
+		$this->extend("getCMSActions", $actions);
+		return $actions;
 	}
 	
-	public function getFormActions() {
-		
-	}
-	
+	/**
+	 * Save the form in its current state.
+	 * 
+	 * @param $data array - Form data
+	 * @param $form Form - Current Form
+	 * @return SS_HTTPResponse
+	**/
 	public function save($data, $form) {
 		$twitter = $this->getTwitterApp();
 		$form->saveInto($twitter, $this->request);
@@ -66,8 +70,15 @@ class TwitterAdmin extends LeftAndMain {
 		return $this->getResponseNegotiator()->respond($this->request);
 	}
 	
+	
+	/**
+	 * Returns the Twitter App for the current site.
+	 *
+	 * @return TwitterApp
+	**/
 	public function getTwitterApp() {
-		return TwitterApp::get()->first();
+		if($this->twitter) return $this->twitter;
+		return $this->twitter = TwitterApp::get()->first();
 	}
 }
 

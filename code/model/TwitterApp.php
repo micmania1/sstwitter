@@ -99,16 +99,15 @@ class TwitterApp extends DataObject implements TemplateGlobalProvider {
 	}
 
 	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->addFieldsToTab("Root.Twitter", array(
-			HeaderField::create("Application Settings", 3),
-			TextField::create("TwitterConsumerKey", "Consumer Key"),
-			TextField::create("TwitterConsumerSecret", "Consumer Secret"),
-			OptionsetField::create("EnableTwitterLogin", "Twitter Login", array(
-				0 => "Disabled",
-				1 => "Enabled"
-			))
-		));
+		$fields = new FieldList();
+		$fields->push(HeaderField::create("Application Settings", 3));
+		$fields->push(TextField::create("TwitterConsumerKey", "Consumer Key"));
+		$fields->push(PasswordField::create("TwitterConsumerSecret", "Consumer Secret"));
+		$fields->push(OptionsetField::create("EnableTwitterLogin", "Twitter Login", array(
+			0 => "Disabled",
+			1 => "Enabled"
+		)));
+		$this->extend("updateCMSFields", $fields);
 		return $fields;
 	}
 	

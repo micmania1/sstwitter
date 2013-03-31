@@ -1,10 +1,8 @@
 <?php
 
-// Add SiteConfig extensions
+// Add Extensions
 DataObject::add_extension("TwitterApp", "TwitterUser");
-
-
-// Add Member extensions
+DataObject::add_extension("TwitterAdmin", "TwitterUserAdmin");
 DataObject::add_extension("Member", "TwitterUser");
 
 Director::set_environment_type("dev");
