@@ -1,0 +1,15 @@
+TwitterAdmin:
+  extensions:
+    0: TwitterUserAdmin
+
+
+TwitterApp:
+  extensions:
+    0: TwitterUser
+
+Member:
+  extensions:
+    0: TwitterUser
+
+Director:
+  environment: dev

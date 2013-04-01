@@ -5,7 +5,6 @@
     "require": {
         "micmania1/phptwitter": "1.0.*@stable",
         "silverstripe/framework": "3.0.*@stable",
-        "silverstripe/cms": "3.0.*@stable",
-        "silverstripe/installer": "*"
+        "silverstripe/cms": "3.0.*@stable"
     }
 }

@@ -44,68 +44,24 @@ class TwitterUser extends DataExtension {
 	 * @param $fields FieldList
 	**/
 	public function updateCMSFields(FieldList $fields) {
-
-		if(!self::$twitter) {
-			$twitter = TwitterApp::get()->first();
-			if($twitter) {
-				self::$twitter = $twitter->getTwitter();
+		// Remove fields that may have been added elsewhere.
+		$fields->removeByName("TwitterUser");
+		$fields->removeByName("TwitterScreenName");
+		$fields->removeByName("TwitterUserID");
+		$fields->removeByName("TwitterAccessToken");
+		$fields->removeByName("TwitterAccessSecret");
 		
-				if(self::$twitter) {
-					self::$twitter->setOAuthCallback(Director::absoluteURL(Controller::curr()->Link()));
-
-				    $request = Session::get("Twitter.Request");
-				    if($request) {
-				        self::$twitter->setRequest(unserialize($request));
-				        Session::clear("Twitter.Request");
-				    } else {
-				        $request = self::$twitter->getRequestToken();
-				        if($request) {
-				            Session::set("Twitter.Request", serialize($request));
-				        }
-				    }
-				    
-				    // Check to see if we have our access tokens stored in the db.
-				    if($this->owner->accessToken != null && $this->owner->accessSecret != null) {
-				       	self::$twitter->setAccess(new OAuthToken($this->owner->accessToken, $this->owner->accessSecret));
-				    } else if ($access = self::$twitter->getAccessToken()) {
-				        $user = self::$twitter->getUser();
-				        if($user) {
-				            $this->owner->connectTwitterAccount($user['id_str'], $user['screen_name'], 
-				            	self::$twitter->access()->token, self::$twitter->access()->secret
-				        	);
-				        }
-				    }
-				}
-	
-				if(self::$twitter) {
-					$fields->addFieldsToTab("Root.Twitter", array(
-						HeaderField::create("Access", 3),
-						TextField::create("TwitterAccessToken", "Access Token"),
-						TextField::create("TwitterAccessSecret", "Access Secret"),
-						HeaderField::create("User Details", 3),
-						TextField::create("TwitterUserID", "User ID"),
-						$test = TextField::create("TwitterScreenName", "Screen Name")
-					));
-	
-					if(self::$twitter && !$this->owner->TwitterUserID) {
-						if($loginURL = self::$twitter->getLoginURL()) {
-							$fields->insertBefore(LiteralField::create(
-								"LoginURL", '<p><a href="'.$loginURL.'" title="Auto-fill">Auto-fill</a></p>'),
-								"TwitterAccessToken"
-							);
-						}
-					}
-				} else {
-					$fields->addFieldsToTab("Root.Twitter", array(
-						HeaderField::create("Access", 3),
-						LiteralField::create(
-							"Notice", 
-							"<p>You need to add your Twitter Consumer Key & Secret to your SiteConfig before the Integration can be complete.</p>"
-						)
-					));
-				}
-			}
-		}
+		// Add our new fields.
+		$fields->push(
+			ToggleCompositeField::create('TwitterUser', 'Twitter User',
+				array(
+					TextField::create("TwitterScreenName", "Screen Name"),
+					TextField::create("TwitterUserID", "User ID"),
+					TextField::create("TwitterAccessToken", "Access Token"),
+					PasswordField::create("TwitterAccessSecret", "Access Secret")
+				)
+			)->setHeadingLevel(4)
+		);
 	}
     
 	/**

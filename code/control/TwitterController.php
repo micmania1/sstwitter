@@ -45,7 +45,7 @@ class TwitterController extends ContentController {
 		$form = $this->Form();
 		$member = Member::currentUser();
 		if($member) {
-			$twitter = TwitterApp::curr();
+			$twitter = TwitterApp::get()->first()->getTwitter();
 			if(!$twitter) {
 				$form->sessionMessage("Unable to fetch Twitter Application", "bad");
 				$this->redirectBack();
@@ -109,14 +109,14 @@ class TwitterController extends ContentController {
 	public function login() {
 		$form = $this->Form();
 		
-		$siteConfig = SiteConfig::current_site_config();
-		if(!$siteConfig || !$siteConfig->EnableTwitterLogin) {
+		$twitterApp = TwitterApp::get()->first();
+		if(!$twitterApp || !$twitterApp->EnableTwitterLogin) {
 			$form->sessionMessage("Twitter Login is disabled.", "bad");
 		} else {
 			if($member = Member::currentUser())
 				$member->logOut();
 
-			$twitter = TwitterApp::curr();
+			$twitter = $twitterApp->getTwitter();
 			if($twitter) {
 				$twitter->setOAuthCallback(Director::absoluteURL(Controller::join_links("twitter", "login")));
 
