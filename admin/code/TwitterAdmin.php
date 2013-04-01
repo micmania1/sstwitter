@@ -7,18 +7,39 @@
  * @subpackage admin
 **/
 class TwitterAdmin extends LeftAndMain {
-
-	static $menu_title = "Twitter Integration";
-	
-	static $url_segment = "twitter";
 	
 	static $allowed_actions = array(
-		"EditForm"
+		"save"
 	);
 	
+	/**
+	 * CMS URL Segment
+	 * 
+	 * @var string
+	**/
+	static $url_segment = "twitter";
+
+	/**
+	 * CMS Menu Title
+	 *
+	 * @var string
+	**/
+	static $menu_title = "Twitter Integration";
+	
+	/**
+   	 * CMS Menu icon.
+   	 *
+   	 * @var string - Path to image
+   	**/
 	static $menu_icon = "sstwitter/admin/images/menu-icons/twitter.png";
 	
+	/**
+	 * Stores an instance of Twitter.
+	 *
+	 * @var Twitter
+	**/
 	protected $twitter;
+	
 	
 	public function init() {
 		parent::init();
@@ -42,6 +63,11 @@ class TwitterAdmin extends LeftAndMain {
 		return $form;
 	}
 	
+	/**
+	 * Add actions to the EditForm
+	 *
+	 * @return FieldList
+	**/
 	public function getCMSActions() {
 		//Setup Actions
 		$actions = new FieldList();

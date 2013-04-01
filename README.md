@@ -1,13 +1,14 @@
 SSTwitter
 ============================
 
-This is a silverstripe module which allows for basic integration between Silverstripe & Twitter.
+SSTwitter is a Silverstripe module to allow simple integration between Twitter & Silverstripe.
 
-Upon installation a new tab will be added to 'Settings' in the CMS which will ask for your Twitter Consumer Key & Secret. You can get these by setting up an Application on Twitter: https://dev.twitter.com/
-
-After saving those fields you will be given an 'Auto-fill' option which will take you through the Twitter authorization
-process and fill in the fields automatically for you.
-
+Features
+--------
+* CMS interface to integrate Silverstripe with a Twitter application & connect an account to the website.
+* Connect/Disconnect Member's to Twitter accounts.
+* Enable/Disable Twitter login through the CMS.
+* Developer Access to Twitter API through [PHPTwitter](http://www.github.com/micmania1/phptwitter).
 
 Usage
 --------
@@ -21,7 +22,7 @@ This will disassociate the Twitter account from the Member.
 **$TwitterLoginURL** (TwitterApp::login_url())
 This will return a url whereby the user can login to their Silverstripe account through Twitter where previously connected.
 
-	<a href="$TwitterConnectURL">Connect</a><br />
+    <a href="$TwitterConnectURL">Connect</a><br />
 	<a href="$TwitterDisconnectURL">Disconnect</a><br />
 	<% if TwitterLoginURL %>
 		<a href="$TwitterLoginURL">Login</a>
@@ -33,7 +34,7 @@ This will return a url whereby the user can login to their Silverstripe account 
 Extending
 ---------
 SSTwitter uses [PHPTwitter](http://www.github.com/micmania1/phptwitter) for its Twitter Authentication which has a central Twitter->api() method which handles all API requests. This means you can easily harness its power to interact directly with Twitter.
-Below is an example of how you would get the latest tweets for the account connected to SiteConfig.
+Below is an example of how you would get the latest tweets for the account connected to your website.
 
 In Page_Controller.php:
 
@@ -41,14 +42,14 @@ In Page_Controller.php:
     
     	$tweets = new ArrayList();
    
-    	$siteConfig = SiteConfig::current_site_config();
-    	$twitter = TwitterApp::curr();
-    	$twitter->setAccess(new OauthToken($siteConfig->TwitterAccessToken, $siteConfig->TwitterAccessSecret));
+        $twitterApp = TwitterApp::get()->frist();
+    	$twitter = $twitterApp()->getTwitter(); // Access the PHPTwitter interface
+    	$twitter->setAccess(new OauthToken($twitterApp->TwitterAccessToken, $twitterApp->TwitterAccessSecret));
     
     	// Get the latest Tweets
     	if($twitter->hasAccess()) {
     	    $result = $twitter->api("1.1/statuses/user_timeline.json", "GET", array(
-    	        "screen_name" => $siteConfig->TwitterScreenName,
+    	        "screen_name" => $twitterApp->TwitterScreenName,
     	        "count" => (int) $count
     	    ));
     	    
