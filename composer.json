@@ -4,5 +4,8 @@
     "type": "silverstripe-module",
     "require": {
         "micmania1/phptwitter": "1.0.*@stable"
-    }
+    },
+	"config": { 
+    	"vendor-dir": "vendor/" 
+  	}
 }
