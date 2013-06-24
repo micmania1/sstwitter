@@ -48,7 +48,6 @@ class TwitterController extends ContentController {
 			$twitter = TwitterApp::get()->first()->getTwitter();
 			if(!$twitter) {
 				$form->sessionMessage("Unable to fetch Twitter Application", "bad");
-				$this->redirectBack();
 				return $this->renderWith(array("TwitterController", "Page", "Controller"));
 			}
 			
@@ -74,12 +73,12 @@ class TwitterController extends ContentController {
 				if($user) {
 					$member->connectTwitterAccount($user['id_str'], $user['screen_name'], $twitter->access()->token, $twitter->access()->secret);
 					$form->sessionMessage("You have connected your Twitter account.", "good");
+					$this->extend("onAfterTwitterConnect", $member);
 				}
 			}
 		} else {
 			$form->sessionMessage("You must be logged in to connect your Twitter account.", "bad");
 		}
-		$this->redirectBack();
 		return $this->renderWith(array("TwitterController", "Page", "Controller"));
 	}
 
@@ -92,11 +91,13 @@ class TwitterController extends ContentController {
 	public function disconnect($request) {
 		$form = $this->Form();
 		$member = Member::currentUser();
+
 		if($member) {
 			$member->disconnectTwitterAccount();
-			$form->sessionMessage("You have disconnected your account.", "good");
+			$this->extend("onAfterTwitterDisconnect", $member);
 		}
-		$this->redirectBack();
+		$form->sessionMessage("You have disconnected your account.", "good");
+
 		return $this->renderWith(array("TwitterController", "Page", "Controller"));
 	}
 
@@ -141,6 +142,7 @@ class TwitterController extends ContentController {
 						if($member) {
 							$member->logIn();
 							$form->sessionMessage("You have logged in using Twitter.", "good");
+							$this->extend("onAfterTwitterLogin", $member);
 						} else {
 							$form->sessionMessage("Unable to find your account.", "bad");
 						}
@@ -154,9 +156,8 @@ class TwitterController extends ContentController {
 		}
 
 		// Extend Failed twitter login
-		if(!Member::currentUserID()) $this->extend("onAfterFailedTwitterLogin");
+		if(!Member::currentUser()) $this->extend("onAfterFailedTwitterLogin");
 
-		$this->redirectBack();
 		return $this->renderWith(array("TwitterController", "Page", "Controller"));
 	}
 }
