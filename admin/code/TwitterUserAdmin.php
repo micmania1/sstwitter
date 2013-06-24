@@ -21,20 +21,24 @@ class TwitterUserAdmin extends DataExtension {
 		$twitterApp = $this->getTwitterApp();
 		$twitter = $twitterApp->getTwitter();
 		
-		$twitter->setOAuthCallback(Director::absoluteURL(Controller::curr()->Link("authorize")));
-		Session::set("TwitterRequest", $twitter->getRequestToken());
-		
-		// Add the authorize action if consumer keys are set.
-		if($twitterApp->TwitterConsumerKey && $twitterApp->TwitterConsumerSecret) {
-			$buttonText = ($twitterApp->TwitterAccessToken && $twitterApp->TwitterAccessSecret) ? "Update Twitter Account" : "Authorize a Twitter Account";
-			$fields->push(
-				FormAction::create("authorize", $buttonText)
-					->setUseButtonTag(true)
-					->addExtraClass("sstwitter-ui-action-twitter")
-					->setAttribute("data-icon", "twitter")
-					->setAttribute("data-role", "authorize")
-					->setAttribute("data-url", $twitter->getLoginURL())
-			);
+		if($twitter) {
+			$twitter->setOAuthCallback(Director::absoluteURL(Controller::curr()->Link("authorize")));
+			Session::set("TwitterRequest", $twitter->getRequestToken());
+			
+			// Add the authorize action if consumer keys are set.
+			if($twitterApp->TwitterConsumerKey && $twitterApp->TwitterConsumerSecret) {
+				if($url = $twitter->getLoginURL()) {
+					$buttonText = ($twitterApp->TwitterAccessToken && $twitterApp->TwitterAccessSecret) ? "Update Twitter Account" : "Authorize a Twitter Account";
+					$fields->push(
+						FormAction::create("authorize", $buttonText)
+							->setUseButtonTag(true)
+							->addExtraClass("sstwitter-ui-action-twitter")
+							->setAttribute("data-icon", "twitter")
+							->setAttribute("data-role", "authorize")
+							->setAttribute("data-url", $url)
+					);
+				}
+			}
 		}
 		return $fields;
 	}
