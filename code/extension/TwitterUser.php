@@ -123,7 +123,7 @@ class TwitterUser extends DataExtension {
 		        
 		        // Exclude the current user from the search.
 		        if($this->owner->ID)
-		            $duplicate->exclude("ID", $this->owner->ID);
+		            $duplicate = $duplicate->exclude("ID", $this->owner->ID);
 		            
 		        if($duplicate->first())
 		            $validation->error("Your Twitter account is already connected to another ". $this->owner->singular_name().".");
