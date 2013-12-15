@@ -24,7 +24,7 @@ class TwitterAdmin extends LeftAndMain {
 	 *
 	 * @var string
 	**/
-	static $menu_title = "Twitter Integration";
+	static $menu_title = "Twitter";
 	
 	/**
    	 * CMS Menu icon.
@@ -109,5 +109,3 @@ class TwitterAdmin extends LeftAndMain {
 		return $this->twitter = TwitterApp::get()->first();
 	}
 }
-
-?>

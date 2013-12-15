@@ -54,16 +54,20 @@ class TwitterUserAdmin extends DataExtension {
 		if($request && $twitter->getOAuthVerifier()) {
 			$twitter->setRequest($request);
 			if($access = $twitter->getAccessToken()) {
-				$user = $twitter->getUser();
-	            if($user) {
+				if($user = $twitter->getUser()) {
 	            	$twitterApp->setOverwriteExistingTwitterAccount(true);
-	                $write = $twitterApp->connectTwitterAccount($user['id_str'], $user['screen_name'], 
-	                	$twitter->access()->token, $twitter->access()->secret
+	                $write = $twitterApp->connectTwitterAccount(
+	                	$user['id_str'], 
+	                	$user['screen_name'], 
+	                	$twitter->access()->token, 
+	                	$twitter->access()->secret
 	            	);
 	            	if($write) {
-	            		$this->owner->getEditForm()->sessionMessage("Your Twitter account has been connected.", "good");
+	            		$this->owner->getEditForm()
+	            			->sessionMessage("Your Twitter account has been connected.", "good");
             		} else {
-            			$this->owner->getEditForm()->sessionMessage("Unable to connect your Twitter account.", "bad");
+            			$this->owner->getEditForm()
+            				->sessionMessage("Unable to connect your Twitter account.", "bad");
         			}
 	            }
 			}

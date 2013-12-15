@@ -8,8 +8,8 @@
 		&.sstwitter-ui-action-twitter {
 			color: $color-text-light;
 			background-color: $color-button-twitter;
-			@include text-shadow(darken($color-button-twitter, 3%) 0 -1px -1px);
-			border-color: $color-button-twitter-dark;			
+			border-color: $color-button-twitter-dark;
+			text-shadow: none;		
 			@include background(
 				linear-gradient(color-stops(
 					lighten($color-button-twitter, 10%),
