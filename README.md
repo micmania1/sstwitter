@@ -43,7 +43,7 @@ In Page_Controller.php:
     	$tweets = new ArrayList();
    
         $twitterApp = TwitterApp::get()->first();
-    	$twitter = $twitterApp()->getTwitter(); // Access the PHPTwitter interface
+    	$twitter = $twitterApp->getTwitter(); // Access the PHPTwitter interface
     	$twitter->setAccess(new OauthToken($twitterApp->TwitterAccessToken, $twitterApp->TwitterAccessSecret));
     
     	// Get the latest Tweets
