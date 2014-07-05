@@ -57,11 +57,11 @@ In Page_Controller.php:
     	    	$json = json_decode($result->body(), true);
     	    	if(count($json) > 0) {
     	    		foreach($json as $tweet) {
-    	    			$tweets->push(array(
+    	    			$tweets->push(ArrayData::create(array(
     	    				"Tweet" => $tweet['text'],
     	    				"Created" => $tweet['created_at'],
     	    				"Link" => "http://www.twitter.com/".rawurlencode($tweet['user']['screen_name'])."/status/".rawurlencode($tweet['id_str'])
-    	    			));
+    	    			)));
     	    		}
     	    	}
     	    }
